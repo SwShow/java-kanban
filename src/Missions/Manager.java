@@ -60,7 +60,6 @@ public class Manager {
         for (int ids : epics.keySet()) {  // найти идентификаторы эпиков
             idEp.add(ids);
         }
-        System.out.println("айдиэпик" + idEp);
         for (int id : idEp) {
             removeEpic(id);
         }
@@ -70,7 +69,6 @@ public class Manager {
         HashMap<Integer, SubTask> founds = findSubTasksOfIdEpic(idEpic);  // найти подзадачи
         for (int ids : founds.keySet()) {
             subTasks.remove(ids);
-            System.out.println(subTasks);
         }
         epics.remove(idEpic);
     }
