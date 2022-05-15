@@ -1,4 +1,4 @@
-package Task;
+package Challenges;
 
 import java.util.Objects;
 
@@ -53,7 +53,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task.Task{" +
+        return "Challenges.Task{" +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +

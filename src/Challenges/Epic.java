@@ -1,6 +1,4 @@
-package Epic;
-
-import Task.Task;
+package Challenges;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -15,6 +13,11 @@ public class Epic extends Task {
         this.status = status;
         idSubTasks = new ArrayList<>();
 
+    }
+
+
+    public ArrayList<Integer> getIdSubTasks() {
+        return idSubTasks;
     }
 
     public String getStatus() {
@@ -41,7 +44,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic.Epic{" +
+        return "Challenges.Epic{" +
                 ", name='" + super.getName() + '\'' +
                 ", description='" + super.getDescription() + '\'' +
                 ", idSubTask'" + idSubTasks + '\'' +

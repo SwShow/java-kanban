@@ -1,7 +1,8 @@
+package Missions;
 
-import Epic.Epic;
-import SubTask.SubTask;
-import Task.Task;
+import Challenges.Epic;
+import Challenges.SubTask;
+import Challenges.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class Manager {
         return id;
     }
 
-    HashMap<Integer, Task> tasks = new HashMap<>();
+    public HashMap<Integer, Task> tasks = new HashMap<>();
 
     public void createTask(Task task) {  // создать задачу
         id = calculateId();
@@ -39,9 +40,9 @@ public class Manager {
     }   //  удаление по идентификатору
 
 
-    HashMap<Integer, Epic> epics = new HashMap<>();
+    public HashMap<Integer, Epic> epics = new HashMap<>();
 
-    void createEpic(Epic name) {  // создать эпик
+    public void createEpic(Epic name) {  // создать эпик
         int idEpic = calculateId();
         epics.put(idEpic, name);  // положили эпик в мапу со своим айди и нулевым списком
     }
@@ -55,23 +56,28 @@ public class Manager {
     }  // обновление эпика по идентификатору
 
     public void removeEpics() {  // удаление всех эпиков
-        ArrayList<Integer> ids = new ArrayList<>();
-        for (int i = 0; i < epics.size(); i++) {
-            int id = ids.get(i);
-            subTasks.remove(id);
+        ArrayList<Integer> idEp =new ArrayList<>();
+        for (int ids : epics.keySet()) {  // найти идентификаторы эпиков
+            idEp.add(ids);
         }
-        epics.clear();
+        System.out.println("айдиэпик" + idEp);
+        for (int id : idEp) {
+            removeEpic(id);
+        }
     }
 
     public void removeEpic(int idEpic) {// удалить эпик по идентификатору
         HashMap<Integer, SubTask> founds = findSubTasksOfIdEpic(idEpic);  // найти подзадачи
-        founds.clear();
-        epics.remove(id);
+        for (int ids : founds.keySet()) {
+            subTasks.remove(ids);
+            System.out.println(subTasks);
+        }
+        epics.remove(idEpic);
     }
 
-    HashMap<Integer, SubTask> subTasks = new HashMap<>(); //  мапа сабтасков
+    public HashMap<Integer, SubTask> subTasks = new HashMap<>(); //  мапа сабтасков
 
-    void addSubTask(int idEpic, SubTask task) {
+    public void addSubTask(int idEpic, SubTask task) {
         id = calculateId();
         task.setIdEpic(idEpic);  //  записали в поле сабтаска айди эпика
         subTasks.put(id, task);//  положили сабтаск в мапу со своим айди
@@ -111,12 +117,13 @@ public class Manager {
 
     public HashMap<Integer, SubTask> findSubTasksOfIdEpic(int idEpic) {  // найти подзадачи по id эпика
         HashMap<Integer, SubTask> foundSubTasks = new HashMap<>();
-        ArrayList<Integer> ids = getIdSubTask(idEpic);
+        ArrayList<Integer> ids = getIdSubTask(idEpic);  //  лист идентификаторов подзадач
         for (int i = 0; i < ids.size(); i++) {
             int id = ids.get(i);
             SubTask founds = subTasks.get(id);
             foundSubTasks.put(id, founds);
-        }return foundSubTasks;
+        }
+        return foundSubTasks;
     }
 
     public void findOllStatusSubTask(int idEpic) {    // смена статуса

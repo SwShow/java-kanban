@@ -1,5 +1,4 @@
-package SubTask;
-import Task.Task;
+package Challenges;
 
 import java.util.Objects;
 
@@ -41,7 +40,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "SubTask.SubTask{" +
+        return "Challenges.SubTask{" +
                 ", name='" + super.getName() + '\'' +
                 ", description='" + super.getDescription() + '\'' +
                 ", status=" + super.getStatus() +
