@@ -1,16 +1,32 @@
-
+package Task;
 
 import java.util.Objects;
 
 public class Task {
-    public String name;
-    public String description;
-    public String status;
+    private String name;
+    private String description;
+    private String status;
 
     public Task(String name, String description, String status) {
         this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setStatus(String status) {
@@ -37,11 +53,12 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "Task.Task{" +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 '}' + "\n";
     }
 }
+
 

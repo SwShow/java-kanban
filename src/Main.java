@@ -1,3 +1,6 @@
+import Epic.Epic;
+import SubTask.SubTask;
+import Task.Task;
 
 public class Main {
 
@@ -10,13 +13,13 @@ public class Main {
         manager.createTask(dinner);
         Task drink = new Task("Coffee", "Capuccino", "NEW");
         manager.createTask(drink);
-        System.out.println("Задачи " + manager.Tasks);
+        System.out.println("Задачи " + manager.tasks);
         Task found = manager.findTaskById(2);
         System.out.println(found);
         Task go = new Task("open the door", "close the door", "NEW");
         manager.updateTask(2, go);
         manager.removeTask(1);
-        System.out.println("Задачи " + manager.Tasks);  // получить список всех задач
+        System.out.println("Задачи " + manager.tasks);  // получить список всех задач
 
         Epic shopping = new Epic("сходить в магазин", "Ашан", "NEW");
         SubTask Shop1 = new SubTask("купить мыло", "душистое", "NEW", 0);
@@ -39,8 +42,8 @@ public class Main {
         manager.changeSubTask(5, St3, 4);
 
         manager.removeEpic(4);
-        System.out.println("Эпики" + manager.Epics);
-        System.out.println(manager.SubTasks);
+        System.out.println("Эпики" + manager.epics);
+        System.out.println(manager.subTasks);
         System.out.println(manager.getStatusSubTask(5));
     }
 }

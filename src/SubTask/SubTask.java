@@ -1,18 +1,28 @@
+package SubTask;
+import Task.Task;
+
 import java.util.Objects;
 
 public class SubTask extends Task {
-    int idEpic;
+    private int idEpic;
 
     public SubTask(String name, String description, String status, int idEpic) {
         super(name, description, status);
-        this.name = name;
-        this.description = description;
-        this.status = status;
+
         this.idEpic = idEpic;
     }
 
+    public void setIdEpic(int idEpic) {
+        this.idEpic = idEpic;
+    }
+
+    public int getIdEpic() {
+        return idEpic;
+    }
+
+    @Override
     public String getStatus() {
-        return status;
+        return super.getStatus();
     }
 
     @Override
@@ -31,10 +41,10 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "SubTask{" +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
+        return "SubTask.SubTask{" +
+                ", name='" + super.getName() + '\'' +
+                ", description='" + super.getDescription() + '\'' +
+                ", status=" + super.getStatus() +
                 ", idEpic='" + idEpic + '\'' +
                 '}' + "\n";
     }
