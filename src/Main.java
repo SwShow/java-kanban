@@ -1,12 +1,12 @@
 import Challenges.Epic;
-import Missions.Manager;
+import Missions.InMemoryTaskManager;
 import Challenges.SubTask;
 import Challenges.Task;
 
 public class Main {
 
     public static void main(String[] args) {
-        Manager manager = new Manager();
+        InMemoryTaskManager manager = new InMemoryTaskManager();
 
         Task data = new Task("посмотреть фильм", "интересный", "NEW");
         manager.createTask(data);
@@ -14,13 +14,12 @@ public class Main {
         manager.createTask(dinner);
         Task drink = new Task("Coffee", "Capuccino", "NEW");
         manager.createTask(drink);
-       // System.out.println("Задачи " + manager.tasks);
+        System.out.println("Задачи " + manager.tasks);
         Task found = manager.findTaskById(2);
-       // System.out.println(found);
+        System.out.println(found);
         Task go = new Task("open the door", "close the door", "NEW");
         manager.updateTask(2, go);
-        manager.removeTask(1);
-       // System.out.println("Задачи " + manager.tasks);  // получить список всех задач
+        System.out.println("Задачи " + manager.tasks);  // получить список всех задач
 
         Epic shopping = new Epic("сходить в магазин", "Ашан", "NEW");
         SubTask Shop1 = new SubTask("купить мыло", "душистое", "NEW", 0);
@@ -41,13 +40,18 @@ public class Main {
         SubTask St3 = new SubTask("wash the car", "on the way", "IN_PROGRESS", 0);
         manager.changeSubTask(5, St3, 4);
 
-        manager.removeEpic(4);
+        //manager.removeEpic(4);
         System.out.println("Эпики" + manager.epics);
         System.out.println("Подзадачи " + manager.subTasks);
 
 
-        manager.removeEpics();
+        //manager.removeEpics();
         System.out.println("Эпики" + manager.epics);
         System.out.println("Подзадачи " + manager.subTasks);
+        manager.findTaskById(1);
+        manager.findTaskById(2);
+        manager.findTaskById(3);
+        System.out.println( manager.getHistory());
+
     }
 }
