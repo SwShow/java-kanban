@@ -51,7 +51,7 @@ public class Main {
         manager.findTaskById(1);
         manager.findTaskById(2);
         manager.findTaskById(3);
-        System.out.println( manager.getHistory());
+        System.out.println(manager.getHistory());
 
     }
 }
