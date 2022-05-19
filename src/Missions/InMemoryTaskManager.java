@@ -82,6 +82,9 @@ class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateEpic(int id, Epic task) {   // обновление эпика по идентификатору
         ArrayList<Integer> idSub = getIdSubTask(id); //  получить список идентификаторов подзадач
+        for (int i : idSub) {
+            subTasks.remove(i);
+        }
         idSub.clear();  //  очистить список идентификаторов подзадач
         epics.replace(id, task);  //  заменить эпик
     }

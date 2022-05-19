@@ -41,11 +41,14 @@ public class Main {
         manager.changeSubTask(5, holy, 4);
         manager.findSubTasksOfIdEpic(4);
 
+        Epic programming = new Epic("сесть за стол", "налить кофе", "NEW");
+        manager.updateEpic(7, programming);
+
         Task St = manager.findValOfId(5);
         SubTask St3 = new SubTask("wash the car", "on the way", "IN_PROGRESS", 0);
         manager.changeSubTask(5, St3, 4);
 
-        manager.removeEpic(4);
+        //manager.removeEpic(4);
         System.out.println("Эпики" + manager.getEpics());
         System.out.println("Подзадачи " + manager.getSubTasks());
 
