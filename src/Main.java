@@ -1,12 +1,17 @@
 import Challenges.Epic;
-import Missions.InMemoryTaskManager;
+
 import Challenges.SubTask;
 import Challenges.Task;
+import Missions.HistoryManager;
+import Missions.Managers;
+import Missions.TaskManager;
 
 public class Main {
 
     public static void main(String[] args) {
-        InMemoryTaskManager manager = new InMemoryTaskManager();
+
+        TaskManager manager = Managers.getDefault();
+        HistoryManager historyManager = Managers.getDefaultHistory();
 
         Task data = new Task("посмотреть фильм", "интересный", "NEW");
         manager.createTask(data);
@@ -14,12 +19,12 @@ public class Main {
         manager.createTask(dinner);
         Task drink = new Task("Coffee", "Capuccino", "NEW");
         manager.createTask(drink);
-        System.out.println("Задачи " + manager.tasks);
+        System.out.println("Задачи " + manager.getTasks());
         Task found = manager.findTaskById(2);
         System.out.println(found);
         Task go = new Task("open the door", "close the door", "NEW");
         manager.updateTask(2, go);
-        System.out.println("Задачи " + manager.tasks);  // получить список всех задач
+        System.out.println("Задачи " + manager.getTasks());  // получить список всех задач
 
         Epic shopping = new Epic("сходить в магазин", "Ашан", "NEW");
         SubTask Shop1 = new SubTask("купить мыло", "душистое", "NEW", 0);
@@ -40,18 +45,18 @@ public class Main {
         SubTask St3 = new SubTask("wash the car", "on the way", "IN_PROGRESS", 0);
         manager.changeSubTask(5, St3, 4);
 
-        //manager.removeEpic(4);
-        System.out.println("Эпики" + manager.epics);
-        System.out.println("Подзадачи " + manager.subTasks);
+        manager.removeEpic(4);
+        System.out.println("Эпики" + manager.getEpics());
+        System.out.println("Подзадачи " + manager.getSubTasks());
 
-
-        //manager.removeEpics();
-        System.out.println("Эпики" + manager.epics);
-        System.out.println("Подзадачи " + manager.subTasks);
+        manager.removeSubTask();
+        manager.removeEpics();
+        System.out.println("Эпики" + manager.getEpics());
+        System.out.println("Подзадачи " + manager.getSubTasks());
         manager.findTaskById(1);
         manager.findTaskById(2);
         manager.findTaskById(3);
-        System.out.println(manager.getHistory());
+        System.out.println(historyManager.getHistory());
 
     }
 }

@@ -20,7 +20,7 @@ public class SubTask extends Task {
     }
 
     @Override
-    public String getStatus() {
+    public MyEnum getStatus() {
         return super.getStatus();
     }
 

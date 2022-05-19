@@ -5,16 +5,20 @@ import Challenges.Task;
 import java.util.LinkedList;
 
 
-public class InMemoryHistoryManager<T extends Task> implements HistoryManager<T> {
+class InMemoryHistoryManager implements HistoryManager {
+    private static LinkedList<Task> history = new LinkedList<>();
 
     @Override
-    public void add(T task) {
-
+    public void addHistory(Task task) {
+        if (history.size() >= 10) {
+            history.removeFirst();
+        }
+        history.addLast(task);
     }
 
     @Override
-    public LinkedList<HistoryManager<T>> getHistory() {
-        return null;
+    public LinkedList<Task> getHistory() {
+        return history;
     }
 
 }

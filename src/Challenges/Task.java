@@ -6,12 +6,12 @@ public class Task {
 
     private String name;
     private String description;
-    private String status;
+    private MyEnum status;
 
     public Task(String name, String description, String status) {
         this.name = name;
         this.description = description;
-        this.status = status;
+        this.status = MyEnum.valueOf(status);
     }
 
     public void setName(String name) {
@@ -31,10 +31,10 @@ public class Task {
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = MyEnum.valueOf(status);
     }
 
-    public String getStatus() {
+    public MyEnum getStatus() {
         return status;
     }
 

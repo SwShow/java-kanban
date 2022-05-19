@@ -5,10 +5,10 @@ import Challenges.Task;
 import java.util.LinkedList;
 
 
-public interface HistoryManager<T extends Task> {
+public interface HistoryManager {
 
-    public void add(T task);  //   помечает задачи как просмотренные
+    void addHistory(Task task);  //   помечает задачи как просмотренные
 
-    public LinkedList<HistoryManager<T>> getHistory();  //  возвращает список просмотренных задач
+    LinkedList<Task> getHistory();  //  возвращает список просмотренных задач
 
 }

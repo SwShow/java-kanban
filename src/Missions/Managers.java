@@ -4,7 +4,11 @@ package Missions;
 public class Managers {
 
     public static TaskManager getDefault() {
-        return (TaskManager) InMemoryTaskManager.history;
+        return new InMemoryTaskManager();
+    }
+
+    public static HistoryManager getDefaultHistory() {
+        return new InMemoryHistoryManager();
     }
 
 }
