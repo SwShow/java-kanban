@@ -3,15 +3,23 @@ package Challenges;
 import java.util.Objects;
 
 public class Task {
-
+    private int idTask;
     private String name;
     private String description;
     private MyEnum status;
 
-    public Task(String name, String description, String status) {
+    public Task(String name, String description, MyEnum status) {
         this.name = name;
         this.description = description;
-        this.status = MyEnum.valueOf(status);
+        this.status = status;
+    }
+
+    public void setIdTask(int idTask) {
+        this.idTask = idTask;
+    }
+
+    public int getIdTask() {
+        return idTask;
     }
 
     public void setName(String name) {
@@ -30,8 +38,8 @@ public class Task {
         return description;
     }
 
-    public void setStatus(String status) {
-        this.status = MyEnum.valueOf(status);
+    public void setStatus(MyEnum status) {
+        this.status = status;
     }
 
     public MyEnum getStatus() {

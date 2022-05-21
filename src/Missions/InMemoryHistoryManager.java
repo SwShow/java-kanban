@@ -2,22 +2,22 @@ package Missions;
 
 import Challenges.Task;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 
 class InMemoryHistoryManager implements HistoryManager {
-    private static LinkedList<Task> history = new LinkedList<>();
+    private static ArrayList<Task> history = new ArrayList<>();
 
     @Override
     public void addHistory(Task task) {
         if (history.size() >= 10) {
-            history.removeFirst();
+            history.remove(0);
         }
-        history.addLast(task);
+        history.add(task);
     }
 
     @Override
-    public LinkedList<Task> getHistory() {
+    public ArrayList<Task> getHistory() {
         return history;
     }
 

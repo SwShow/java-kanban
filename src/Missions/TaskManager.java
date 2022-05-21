@@ -6,12 +6,10 @@ import Challenges.SubTask;
 import Challenges.Task;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public interface TaskManager {
 
-    int calculateId();  // установить идентификатор
 
     void createTask(Task task);  // создать задачу
 
@@ -35,8 +33,6 @@ public interface TaskManager {
 
     void addSubTask(int idEpic, SubTask task);  // добавить подзадачу
 
-    void setStatus(String status, int idEpic);
-
     SubTask findValOfId(int id);  // найти подзадачу по идентификатору
 
     void removeSubTask();  //удаление всех подзадач
@@ -47,11 +43,11 @@ public interface TaskManager {
 
     ArrayList<Integer> getIdSubTask(int id);
 
-    ArrayList<SubTask> findSubTasksOfIdEpic(int idEpic);  // найти подзадачи по id эпика
+    ArrayList<Epic> getEpics();
 
-    HashMap<Integer, Epic> getEpics();
+    ArrayList<SubTask> getSubTasks();
 
-    HashMap<Integer, SubTask> getSubTasks();
+    ArrayList<Task> getTasks();
 
-    HashMap<Integer, Task> getTasks();
+    void findSubTasksOfIdEpic(int i);
 }

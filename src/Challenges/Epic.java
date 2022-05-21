@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
-    public ArrayList<Integer> idSubTasks;
+    private final ArrayList<Integer> idSubTasks;
+    private int idEpic;
 
-    public Epic(String name, String description, String status) {
+    public Epic(String name, String description, MyEnum status) {
         super(name, description, status);
 
         idSubTasks = new ArrayList<>();
@@ -17,6 +18,18 @@ public class Epic extends Task {
         return idSubTasks;
     }
 
+    public void setIdEpic(int idEpic) {
+        this.idEpic = idEpic;
+    }
+
+    public int getIdEpic() {
+        return idEpic;
+    }
+
+    @Override
+    public void setStatus(MyEnum status) {
+        super.setStatus(status);
+    }
 
     @Override
     public String toString() {

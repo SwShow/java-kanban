@@ -9,35 +9,36 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 class InMemoryTaskManager implements TaskManager {
-    HistoryManager historyManager = Managers.getDefaultHistory();
+    public static HistoryManager historyManager = Managers.getDefaultHistory();
 
     private int id = 0;
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HashMap<Integer, SubTask> subTasks = new HashMap<>(); //  мапа сабтасков
+    private final HashMap<Integer, Task> tasks = new HashMap<>();
+    private final HashMap<Integer, Epic> epics = new HashMap<>();
+    private final HashMap<Integer, SubTask> subTasks = new HashMap<>(); //  мапа сабтасков
 
-    public HashMap<Integer, Task> getTasks() {
-        return tasks;
+    public ArrayList<Task> getTasks() {
+        return new ArrayList<>(tasks.values());
     }
 
-    public HashMap<Integer, Epic> getEpics() {
-        return epics;
+    public ArrayList<Epic> getEpics() {
+        return new ArrayList<>(epics.values());
     }
 
-    public HashMap<Integer, SubTask> getSubTasks() {
-        return subTasks;
+    public ArrayList<SubTask> getSubTasks() {
+        return new ArrayList<>(subTasks.values());
+
     }
 
-    @Override
-    public int calculateId() {  // установить идентификатор
+    private int calculateId() {  // установить идентификатор
         id++;
         return id;
     }
 
     @Override
     public void createTask(Task task) {  // создать задачу
-        id = calculateId();
-        tasks.put(id, task);  //  положить в мапу задач
+        int idTask = calculateId();
+        task.setIdTask(idTask);
+        tasks.put(idTask, task);  //  положить в мапу задач
     }
 
     @Override
@@ -116,11 +117,6 @@ class InMemoryTaskManager implements TaskManager {
         findOllStatusSubTask(idEpic);       // вызвать метод смены статуса
     }
 
-    @Override
-    public void setStatus(String status, int idEpic) {
-        Epic find = findEpicById(idEpic);
-        find.setStatus(status);
-    }
 
     @Override
     public SubTask findValOfId(int id) {  // найти подзадачу по идентификатору
@@ -156,34 +152,39 @@ class InMemoryTaskManager implements TaskManager {
     @Override
     public ArrayList<Integer> getIdSubTask(int id) { //  найти массив идентификаторов подзадач
         Epic epic = findEpicById(id);
-        return epic.idSubTasks;
+        return epic.getIdSubTasks();
     }
 
-    @Override
-    public ArrayList<SubTask> findSubTasksOfIdEpic(int idEpic) {  // найти подзадачи по id эпика
+
+    public void findSubTasksOfIdEpic(int idEpic) {  // найти подзадачи по id эпика
         ArrayList<SubTask> foundSubTasks = new ArrayList<>();
         ArrayList<Integer> ids = getIdSubTask(idEpic);  //  лист идентификаторов подзадач
         for (int id : ids) {
             SubTask founds = subTasks.get(id);
             foundSubTasks.add(founds);
         }
-        return foundSubTasks;
     }
 
 
-    void findOllStatusSubTask(int idEpic) {    // смена статуса
-        ArrayList<String> statuses = new ArrayList<>();
+    void findOllStatusSubTask(int idEpic) {    // смена статус
+        Epic epic = epics.get(idEpic);
+        ArrayList<MyEnum> statuses = new ArrayList<>();
         ArrayList<Integer> ids = getIdSubTask(idEpic);
         for (int id : ids) {
-            String stat = String.valueOf(getStatusSubTask(id));
-            statuses.add(stat);
+            statuses.add(getStatusSubTask(id));
         }
-        if ((statuses.contains("NEW") & !statuses.contains("IN_PROGRESS") & !statuses.contains("DONE")) |
+        if ((statuses.contains(MyEnum.NEW) & !statuses.contains(MyEnum.IN_PROGRESS) & !statuses.contains(MyEnum.DONE)) |
                 statuses.isEmpty()) {
-            setStatus("NEW", idEpic);
-        } else if (statuses.contains("DONE") & !statuses.contains("IN_PROGRESS") & !statuses.contains("NEW")) {
-            setStatus("DONE", idEpic);
-        } else setStatus("IN_PROGRESS", idEpic);
+            MyEnum status = MyEnum.NEW;
+            epic.setStatus(status);
+        } else if (statuses.contains(MyEnum.DONE) & !statuses.contains(MyEnum.IN_PROGRESS) & !statuses.contains(MyEnum.NEW)) {
+            MyEnum status = MyEnum.DONE;
+            epic.setStatus(status);
+        } else {
+            MyEnum status = MyEnum.IN_PROGRESS;
+            epic.setStatus(status);
+        }
     }
+
 
 }
