@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 class InMemoryTaskManager implements TaskManager {
-    public static HistoryManager historyManager = Managers.getDefaultHistory();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     private int id = 0;
     private final HashMap<Integer, Task> tasks = new HashMap<>();
@@ -166,7 +166,7 @@ class InMemoryTaskManager implements TaskManager {
     }
 
 
-    void findOllStatusSubTask(int idEpic) {    // смена статус
+    private void findOllStatusSubTask(int idEpic) {    // смена статус
         Epic epic = epics.get(idEpic);
         ArrayList<MyEnum> statuses = new ArrayList<>();
         ArrayList<Integer> ids = getIdSubTask(idEpic);
