@@ -22,7 +22,7 @@ public class Epic extends Task {
         this.idEpic = idEpic;
     }
 
-    public int getIdEpic() {
+    public int getId() {
         return idEpic;
     }
 

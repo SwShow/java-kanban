@@ -24,7 +24,7 @@ public class SubTask extends Task {
         this.idSubTask = idSubTask;
     }
 
-    public int getIdSubTask() {
+    public int getId() {
         return idSubTask;
     }
 

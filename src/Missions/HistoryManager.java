@@ -4,12 +4,14 @@ import Challenges.Task;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 
 public interface HistoryManager {
 
     void addHistory(Task task);  //   помечает задачи как просмотренные
 
-    ArrayList<Task> getHistory();  //  возвращает список просмотренных задач
+    List<Task> getHistory();  //  возвращает список просмотренных задач
 
+    void remove(int id);
 }

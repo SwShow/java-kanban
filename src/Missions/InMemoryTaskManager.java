@@ -7,6 +7,7 @@ import Challenges.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager = Managers.getDefaultHistory();
@@ -52,16 +53,22 @@ class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeTasks() {  // удалить все задачи
+        Set<Integer> keys = tasks.keySet();
+        for (int id : keys) {
+            historyManager.remove(id);
+        }
         tasks.clear();
     }
 
     @Override
     public void updateTask(int id, Task task) {  // заменить задачу
+        historyManager.remove(id);
         tasks.replace(id, task);
     }   //  обновление по идентификатору
 
     @Override
     public void removeTask(int id) {  // удалить задачу
+        historyManager.remove(id);
         tasks.remove(id);
     }   //  удаление по идентификатору
 
@@ -87,6 +94,7 @@ class InMemoryTaskManager implements TaskManager {
             subTasks.remove(i);
         }
         idSub.clear();  //  очистить список идентификаторов подзадач
+        historyManager.remove(id);
         epics.replace(id, task);  //  заменить эпик
     }
 
@@ -104,6 +112,7 @@ class InMemoryTaskManager implements TaskManager {
         for (int id : ids) {
             subTasks.remove(id);
         }
+        historyManager.remove(idEpic);
         epics.remove(idEpic);
     }
 
@@ -131,6 +140,9 @@ class InMemoryTaskManager implements TaskManager {
     public void removeSubTask() {  //удаление всех подзадач
         for (int j : epics.keySet()) {   // для каждого эпика
             ArrayList<Integer> founds = getIdSubTask(j); // найти массив идентификаторов подзадач
+            for (int id : founds) {
+                historyManager.remove(id);
+            }
             founds.clear(); // удалить массив
         }
         subTasks.clear();  // удалить подзадачи

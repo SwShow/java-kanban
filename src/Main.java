@@ -57,7 +57,7 @@ public class Main {
         System.out.println("Подзадачи " + manager.getSubTasks());
 
         manager.removeSubTask();
-        manager.removeEpics();
+        //manager.removeEpics();
         System.out.println("Эпики" + manager.getEpics());
         System.out.println("Подзадачи " + manager.getSubTasks());
         manager.findTaskById(1);

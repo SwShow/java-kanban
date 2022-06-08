@@ -18,7 +18,7 @@ public class Task {
         this.idTask = idTask;
     }
 
-    public int getIdTask() {
+    public int getId() {
         return idTask;
     }
 
