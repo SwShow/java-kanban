@@ -1,4 +1,4 @@
-package Challenges;
+package challenges;
 
 import java.util.Objects;
 
@@ -13,6 +13,7 @@ public class Task {
         this.description = description;
         this.status = status;
     }
+
 
     public void setIdTask(int idTask) {
         this.idTask = idTask;

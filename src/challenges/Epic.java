@@ -1,10 +1,10 @@
-package Challenges;
+package challenges;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 
 public class Epic extends Task {
-    private final ArrayList<Integer> idSubTasks;
+    private final List<Integer> idSubTasks;
     private int idEpic;
 
     public Epic(String name, String description, MyEnum status) {
@@ -14,8 +14,9 @@ public class Epic extends Task {
 
     }
 
+
     public ArrayList<Integer> getIdSubTasks() {
-        return idSubTasks;
+        return (ArrayList<Integer>) idSubTasks;
     }
 
     public void setIdEpic(int idEpic) {

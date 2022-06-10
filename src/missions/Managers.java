@@ -1,4 +1,4 @@
-package Missions;
+package missions;
 
 
 public class Managers {

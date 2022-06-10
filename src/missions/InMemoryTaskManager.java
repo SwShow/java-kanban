@@ -1,38 +1,40 @@
-package Missions;
-
-import Challenges.Epic;
-import Challenges.MyEnum;
-import Challenges.SubTask;
-import Challenges.Task;
+package missions;
 
 import java.util.ArrayList;
+
+import challenges.Epic;
+import challenges.MyEnum;
+import challenges.SubTask;
+import challenges.Task;
+
 import java.util.HashMap;
-import java.util.Set;
+
+import java.util.*;
 
 class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     private int id = 0;
-    private final HashMap<Integer, Task> tasks = new HashMap<>();
-    private final HashMap<Integer, Epic> epics = new HashMap<>();
+    private final Map<Integer, Task> tasks = new HashMap<>();
+    private final Map<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>(); //  мапа сабтасков
 
-    public ArrayList<Task> getTasks() {
+    public List<Task> getTasks() {
         return new ArrayList<>(tasks.values());
     }
 
-    public ArrayList<Epic> getEpics() {
+    public List<Epic> getEpics() {
         return new ArrayList<>(epics.values());
     }
 
-    public ArrayList<SubTask> getSubTasks() {
-        return new ArrayList<>(subTasks.values());
-
-    }
-
-    private int calculateId() {  // установить идентификатор
-        id++;
-        return id;
+    public List<SubTask> getSubTasks() {
+        List<SubTask> subTask = new ArrayList<>();
+        if (!subTasks.isEmpty())
+            for (Integer key : subTasks.keySet()) {
+                SubTask subTask1 = subTasks.get(key);
+                subTask.add(subTask1);
+            }
+        return subTask;
     }
 
     @Override
@@ -128,7 +130,7 @@ class InMemoryTaskManager implements TaskManager {
 
 
     @Override
-    public SubTask findValOfId(int id) {  // найти подзадачу по идентификатору
+    public SubTask findSubTaskById(int id) {  // найти подзадачу по идентификатору
         SubTask sub = subTasks.get(id);
         if (sub != null) {
             historyManager.addHistory(sub);
@@ -177,6 +179,15 @@ class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    @Override
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
+    }
+
+    private int calculateId() {  // установить идентификатор
+        id++;
+        return id;
+    }
 
     private void findOllStatusSubTask(int idEpic) {    // смена статус
         Epic epic = epics.get(idEpic);

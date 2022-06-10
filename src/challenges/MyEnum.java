@@ -1,7 +1,7 @@
-package Challenges;
+package challenges;
 
 public enum MyEnum {
     NEW,
     IN_PROGRESS,
-    stat, DONE
+    DONE
 }

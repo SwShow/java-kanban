@@ -1,11 +1,12 @@
-package Missions;
+package missions;
 
-import Challenges.Epic;
-import Challenges.MyEnum;
-import Challenges.SubTask;
-import Challenges.Task;
+import challenges.Epic;
+import challenges.MyEnum;
+import challenges.SubTask;
+import challenges.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public interface TaskManager {
@@ -33,7 +34,9 @@ public interface TaskManager {
 
     void addSubTask(int idEpic, SubTask task);  // добавить подзадачу
 
-    SubTask findValOfId(int id);  // найти подзадачу по идентификатору
+    //SubTask findValOfId(int id);  // найти подзадачу по идентификатору
+
+    SubTask findSubTaskById(int id);
 
     void removeSubTask();  //удаление всех подзадач
 
@@ -43,12 +46,14 @@ public interface TaskManager {
 
     ArrayList<Integer> getIdSubTask(int id);
 
-    ArrayList<Epic> getEpics();
+    List<Epic> getEpics();
 
-    ArrayList<SubTask> getSubTasks();
+    List<SubTask> getSubTasks();
 
-    ArrayList<Task> getTasks();
+    List<Task> getTasks();
 
     void findSubTasksOfIdEpic(int i);
+
+    List<Task> getHistory();
 
 }

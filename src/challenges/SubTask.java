@@ -1,4 +1,4 @@
-package Challenges;
+package challenges;
 
 import java.util.Objects;
 

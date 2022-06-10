@@ -1,9 +1,7 @@
-package Missions;
+package missions;
 
-import Challenges.Task;
+import challenges.Task;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 
