@@ -3,7 +3,7 @@ package challenges;
 import java.util.Objects;
 
 public class Task {
-    private int idTask;
+    private int id;
     private String name;
     private String description;
     private MyEnum status;
@@ -14,14 +14,14 @@ public class Task {
         this.status = status;
     }
 
+    public int getIdTask() {
+        return id;
+    }
 
     public void setIdTask(int idTask) {
-        this.idTask = idTask;
+        this.id = idTask;
     }
 
-    public int getId() {
-        return idTask;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -69,6 +69,8 @@ public class Task {
                 ", status=" + status +
                 '}' + "\n";
     }
+
+
 }
 
 

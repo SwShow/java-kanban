@@ -4,13 +4,14 @@ import java.util.Objects;
 
 public class SubTask extends Task {
     private int idEpic;
-    private int idSubTask;
+    private int id;
 
     public SubTask(String name, String description, MyEnum status, int idEpic) {
         super(name, description, status);
 
-        this.idEpic = idEpic;
+        this.id = id;
     }
+
 
     public void setIdEpic(int idEpic) {
         this.idEpic = idEpic;
@@ -18,14 +19,6 @@ public class SubTask extends Task {
 
     public int getIdEpic() {
         return idEpic;
-    }
-
-    public void setIdSubTask(int idSubTask) {
-        this.idSubTask = idSubTask;
-    }
-
-    public int getId() {
-        return idSubTask;
     }
 
     @Override

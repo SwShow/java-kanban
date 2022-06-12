@@ -24,8 +24,8 @@ public class Main {
         System.out.println("Задачи " + manager.getTasks());
         Task found = manager.findTaskById(2);
         // System.out.println(found);
-        Task go = new Task("open the door", "close the door", NEW);
-        manager.updateTask(2, go);
+        //Task go = new Task("open the door", "close the door", NEW);
+        //manager.updateTask(2, go);
         // System.out.println("Задачи " + manager.getTasks());  // получить список всех задач
 
         Epic shopping = new Epic("сходить в магазин", "Ашан", NEW);
@@ -54,7 +54,7 @@ public class Main {
         // System.out.println("Эпики" + manager.getEpics());
         // System.out.println("Подзадачи " + manager.getSubTasks());
 
-        // manager.removeSubTask();
+        //manager.removeSubTask();
         //manager.removeEpics();
         System.out.println("Эпики" + manager.getEpics());
         System.out.println("Подзадачи " + manager.getSubTasks());

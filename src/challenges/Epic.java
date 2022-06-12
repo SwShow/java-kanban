@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Epic extends Task {
     private final List<Integer> idSubTasks;
-    private int idEpic;
+    private int id;
 
     public Epic(String name, String description, MyEnum status) {
         super(name, description, status);
@@ -14,17 +14,13 @@ public class Epic extends Task {
 
     }
 
-
-    public ArrayList<Integer> getIdSubTasks() {
-        return (ArrayList<Integer>) idSubTasks;
+    public List<Integer> getIdSubTasks() {
+        return idSubTasks;
     }
 
-    public void setIdEpic(int idEpic) {
-        this.idEpic = idEpic;
-    }
-
-    public int getId() {
-        return idEpic;
+    @Override
+    public String getName() {
+        return super.getName();
     }
 
     @Override

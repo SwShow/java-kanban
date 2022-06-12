@@ -12,27 +12,40 @@ public class InMemoryHistoryManager implements HistoryManager {
     private Node head;
     private Node tail;
 
-    private static class Node {
-        Node prev;
-        Node next;
-        Task data;
-
-        public Node(Node prev, Task data, Node next) {
-            this.data = data;
-            this.next = next;
-            this.prev = prev;
-        }
-    }
-
     public void linkLast(Task task) {
         removeNode(task);
         Node oldTail = tail;
         Node newNode = new Node(oldTail, task, null);
-        if (oldTail == null) {
-            head = newNode;
-        }
         tail = newNode;
-        customLinkedList.put(task.getId(), newNode);
+        if (oldTail == null)
+            head = newNode;
+        else
+            oldTail.next = newNode;
+        int id = task.getIdTask();
+        customLinkedList.put(id, newNode);
+    }
+
+    private void removeNode(Task task) {
+        int id = task.getIdTask();
+        final Node node = customLinkedList.get(id);
+        if (node != null) {
+            Node prevNode = node.prev;
+            Node nextNode = node.next;
+            if (prevNode == null) {
+                head = nextNode;
+            } else {
+                prevNode.next = nextNode;
+                node.prev = null;
+            }
+            if (nextNode == null) {
+                tail = prevNode;
+            } else {
+                nextNode.prev = prevNode;
+                node.next = null;
+            }
+            node.data = null;
+            customLinkedList.remove(id);
+        }
     }
 
     @Override
@@ -55,7 +68,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     public List<Task> getList() {
-        System.out.println(customLinkedList);
         List<Task> listTask = new ArrayList();
         Node node = head;
         while (node != null) {
@@ -65,26 +77,16 @@ public class InMemoryHistoryManager implements HistoryManager {
         return listTask;
     }
 
-    private void removeNode(Task task) {
-        int id = task.getId();
-        final Node node = customLinkedList.remove(id);
+    private static class Node {
+        Node prev;
+        Node next;
+        Task data;
 
-        if (node != null) {
-            Node prevNode = node.prev;
-            Node nextNode = node.next;
-            if (prevNode != null) {
-                prevNode.next = nextNode;
-                node.prev = null;
-            } else {
-                head = node.next;
-            }
-            if (nextNode != null) {
-                nextNode.prev = prevNode;
-                node.next = null;
-            } else {
-                tail = node.prev;
-            }
-            node.data = null;
+        public Node(Node prev, Task data, Node next) {
+            this.prev = prev;
+            this.data = data;
+            this.next = next;
+
         }
     }
 }

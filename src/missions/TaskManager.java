@@ -5,7 +5,6 @@ import challenges.MyEnum;
 import challenges.SubTask;
 import challenges.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -44,7 +43,7 @@ public interface TaskManager {
 
     void changeSubTask(int id, SubTask task, int idEpic);  // поменять подзадачу по id
 
-    ArrayList<Integer> getIdSubTask(int id);
+    List<Integer> getIdSubTask(int id);
 
     List<Epic> getEpics();
 
@@ -55,5 +54,6 @@ public interface TaskManager {
     void findSubTasksOfIdEpic(int i);
 
     List<Task> getHistory();
+
 
 }
