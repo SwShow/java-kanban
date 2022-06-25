@@ -1,38 +1,36 @@
 package challenges;
 
+import missions.InMemoryTaskManager;
+
+import java.io.IOException;
 import java.util.Objects;
+
+import static java.lang.String.valueOf;
 
 public class Task {
     private int id;
-    private String name;
-    private String description;
-    private MyEnum status;
+    public TypeTask type;
+    public final String name;
+    public final String description;
+    public MyEnum status;
 
-    public Task(String name, String description, MyEnum status) {
+    public Task(TypeTask type, String name, String description, MyEnum status) {
+        this.type = type;
         this.name = name;
         this.description = description;
         this.status = status;
     }
 
-    public int getIdTask() {
-        return id;
+    public TypeTask getType() {
+        return type;
     }
 
-    public void setIdTask(int idTask) {
-        this.id = idTask;
-    }
-
-
-    public void setName(String name) {
-        this.name = name;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getDescription() {
@@ -42,6 +40,11 @@ public class Task {
     public void setStatus(MyEnum status) {
         this.status = status;
     }
+
+    public int getId() {
+        return id;
+    }
+
 
     public MyEnum getStatus() {
         return status;
@@ -63,13 +66,8 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Challenges.Task{" +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                '}' + "\n";
+        return String.join( ",",valueOf(id), type.toString(), name, description, status.toString(), "\n");
     }
-
 
 }
 

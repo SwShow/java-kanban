@@ -2,23 +2,43 @@ package challenges;
 
 import java.util.Objects;
 
+import static java.lang.String.valueOf;
+
 public class SubTask extends Task {
-    private int idEpic;
-    private int id;
+    public int idEpic;
+    private int idSubTask;
 
-    public SubTask(String name, String description, MyEnum status, int idEpic) {
-        super(name, description, status);
+    public SubTask(TypeTask type, String name, String description, MyEnum status) {
+        super(type, name, description, status);
 
-        this.id = id;
+    }
+
+    public int getIdSubTask() {
+        return idSubTask;
+    }
+
+    public void setIdSubTask(int idSubTask) {
+        this.idSubTask = idSubTask;
+    }
+
+    @Override
+    public TypeTask getType() {
+        return super.getType();
+    }
+
+    @Override
+    public String getDescription() {
+        return super.getDescription();
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
     }
 
 
     public void setIdEpic(int idEpic) {
         this.idEpic = idEpic;
-    }
-
-    public int getIdEpic() {
-        return idEpic;
     }
 
     @Override
@@ -42,13 +62,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "Challenges.SubTask{" +
-                ", name='" + super.getName() + '\'' +
-                ", description='" + super.getDescription() + '\'' +
-                ", status=" + super.getStatus() +
-                ", idEpic='" + idEpic + '\'' +
-                '}' + "\n";
+        return String.join( ",",valueOf(idSubTask), type.toString(), name, description, status.toString(),valueOf(idEpic), "\n");
     }
-
 }
 

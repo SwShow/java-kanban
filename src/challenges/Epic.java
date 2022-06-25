@@ -3,24 +3,45 @@ package challenges;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Epic extends Task {
-    private final List<Integer> idSubTasks;
-    private int id;
+import static java.lang.String.valueOf;
 
-    public Epic(String name, String description, MyEnum status) {
-        super(name, description, status);
+public class Epic extends Task {
+
+    public final ArrayList<Integer> idSubTasks;
+    private int idEpic;
+
+    public Epic(TypeTask type, String name, String description, MyEnum status) {
+        super(type, name, description, status);
 
         idSubTasks = new ArrayList<>();
 
     }
 
-    public List<Integer> getIdSubTasks() {
+    public ArrayList<Integer> getIdSubTasks() {
         return idSubTasks;
+    }
+
+    @Override
+    public TypeTask getType() {
+        return super.getType();
+    }
+
+    public void setIdEpic(int idEpic) {
+        this.idEpic = idEpic;
+    }
+
+    public  int getIdEpic() {
+        return idEpic;
     }
 
     @Override
     public String getName() {
         return super.getName();
+    }
+
+    @Override
+    public MyEnum getStatus() {
+        return super.getStatus();
     }
 
     @Override
@@ -30,13 +51,6 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Challenges.Epic{" +
-                ", name='" + super.getName() + '\'' +
-                ", description='" + super.getDescription() + '\'' +
-                ", idSubTask'" + idSubTasks + '\'' +
-                ", status=" + super.getStatus() +
-                '}' + "\n";
+        return String.join( ",",valueOf(idEpic), type.toString(), name, description, status.toString(), "\n");
     }
-
-
 }
