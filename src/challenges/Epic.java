@@ -2,12 +2,13 @@ package challenges;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.String.valueOf;
 
 public class Epic extends Task {
 
-    public final ArrayList<Integer> idSubTasks;
+    private final ArrayList<Integer> idSubTasks;
     private int idEpic;
 
     public Epic(TypeTask type, String name, String description, MyEnum status) {
@@ -30,7 +31,7 @@ public class Epic extends Task {
         this.idEpic = idEpic;
     }
 
-    public  int getIdEpic() {
+    public int getIdEpic() {
         return idEpic;
     }
 
@@ -50,7 +51,28 @@ public class Epic extends Task {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Epic)) return false;
+        if (!super.equals(o)) return false;
+        Epic epic = (Epic) o;
+        return getIdEpic() == epic.getIdEpic() && Objects.equals(getIdSubTasks(), epic.getIdSubTasks());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getIdSubTasks(), getIdEpic());
+    }
+
+    @Override
     public String toString() {
-        return String.join( ",",valueOf(idEpic), type.toString(), name, description, status.toString(), "\n");
+        return "Epic{" +
+                ", idEpic=" + getIdEpic() +
+                ", type=" + getType() +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", status=" + getStatus() +
+                ", idSubTasks=" + getIdSubTasks() +
+                '}' +"\n";
     }
 }

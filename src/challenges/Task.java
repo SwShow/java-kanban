@@ -1,18 +1,13 @@
 package challenges;
 
-import missions.InMemoryTaskManager;
-
-import java.io.IOException;
 import java.util.Objects;
-
-import static java.lang.String.valueOf;
 
 public class Task {
     private int id;
-    public TypeTask type;
-    public final String name;
-    public final String description;
-    public MyEnum status;
+    private TypeTask type;
+    private final String name;
+    private final String description;
+    private MyEnum status;
 
     public Task(TypeTask type, String name, String description, MyEnum status) {
         this.type = type;
@@ -20,6 +15,7 @@ public class Task {
         this.description = description;
         this.status = status;
     }
+
 
     public TypeTask getType() {
         return type;
@@ -66,9 +62,12 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.join( ",",valueOf(id), type.toString(), name, description, status.toString(), "\n");
+        return " type=" + getType() +
+                ", name='" + getName() +
+                ", description='" + getDescription() +
+                ", status=" + getStatus() +
+                '}' + "\n";
     }
-
 }
 
 

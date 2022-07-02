@@ -2,15 +2,17 @@ package challenges;
 
 import java.util.Objects;
 
-import static java.lang.String.valueOf;
-
 public class SubTask extends Task {
-    public int idEpic;
+    private int idEpic;
     private int idSubTask;
 
     public SubTask(TypeTask type, String name, String description, MyEnum status) {
         super(type, name, description, status);
 
+    }
+
+    public int getIdEpic() {
+        return idEpic;
     }
 
     public int getIdSubTask() {
@@ -62,7 +64,14 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return String.join( ",",valueOf(idSubTask), type.toString(), name, description, status.toString(),valueOf(idEpic), "\n");
+        return "SubTask{" +
+                " idSubTasks=" + getIdSubTask() +
+                ", type=" + getType() +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", status=" + getStatus() +
+                ", idEpic=" + getIdEpic() +
+                '}' + "\n";
     }
 }
 

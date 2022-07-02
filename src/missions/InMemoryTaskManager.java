@@ -1,15 +1,19 @@
 package missions;
-import challenges.*;
-import java.io.IOException;
+
+import challenges.Epic;
+import challenges.MyEnum;
+import challenges.SubTask;
+import challenges.Task;
+
 import java.util.*;
 
-public abstract class InMemoryTaskManager implements TaskManager {
-    public static final HistoryManager historyManager = Managers.getDefaultHistory();
+public class InMemoryTaskManager implements TaskManager {
+    public final HistoryManager historyManager = Managers.getDefaultHistory();
 
     private int id = 0;
-    private static final Map<Integer, Task> tasks = new HashMap<>();
-    private static final Map<Integer, Epic> epics = new HashMap<>();
-    private static final Map<Integer, SubTask> subTasks = new HashMap<>(); //  мапа сабтасков
+    private final Map<Integer, Task> tasks = new HashMap<>();
+    private final Map<Integer, Epic> epics = new HashMap<>();
+    private final Map<Integer, SubTask> subTasks = new HashMap<>(); //  мапа сабтасков
 
 
     public List<Task> getTasks() {
@@ -38,7 +42,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task findTaskById(int id) throws IOException {   // получение задачи по идентификатору
+    public Task findTaskById(int id) {   // получение задачи по идентификатору
         Task tas = tasks.get(id);
         if (tas != null) {
             historyManager.addHistory(tas);
@@ -47,7 +51,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeTasks() throws IOException {  // удалить все задачи
+    public void removeTasks() {  // удалить все задачи
         Set<Integer> keys = tasks.keySet();
         for (int id : keys) {
             historyManager.remove(id);
@@ -56,19 +60,19 @@ public abstract class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(int id, Task task) throws IOException {  // заменить задачу
+    public void updateTask(int id, Task task) {  // заменить задачу
         historyManager.remove(id);
         task.setId(id);
         tasks.replace(id, task);
+        historyManager.addHistory(task);
     }   //  обновление по идентификатору
 
     @Override
-    public void removeTask(int id) throws IOException {  // удалить задачу
+    public void removeTask(int id) {  // удалить задачу
         historyManager.remove(id);
         tasks.remove(id);
     }   //  удаление по идентификатору
 
-    public abstract void save();
 
     @Override
     public void createEpic(Epic name) {  // создать эпик
@@ -78,7 +82,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic findEpicById(int id) throws IOException {   //  получение эпика по идентификатору
+    public Epic findEpicById(int id) {   //  получение эпика по идентификатору
         Epic ep = epics.get(id);
         if (ep != null) {
             historyManager.addHistory(ep);
@@ -87,7 +91,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateEpic(int id, Epic task) throws IOException {   // обновление эпика по идентификатору
+    public void updateEpic(int id, Epic task) {   // обновление эпика по идентификатору
         List<Integer> idSub = getIdSubTask(id); //  получить список идентификаторов подзадач
         for (int i : idSub) {
             subTasks.remove(i);
@@ -99,7 +103,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeEpics() throws IOException {  // удаление всех эпиков
+    public void removeEpics() {  // удаление всех эпиков
         ArrayList<Integer> idEp = new ArrayList<>(epics.keySet()); // найти идентификаторы эпиков
         for (int id : idEp) {  // для каждого идентификатора эпика
             removeEpic(id); // вызвать метод удаления эпика вместе с подзадачами
@@ -108,7 +112,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
 
 
     @Override
-    public void removeEpic(int idEpic) throws IOException {// удалить эпик по идентификатору
+    public void removeEpic(int idEpic) {// удалить эпик по идентификатору
         List<Integer> ids = getIdSubTask(idEpic);// найти подзадачи
         for (int id : ids) {
             subTasks.remove(id);
@@ -118,7 +122,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addSubTask(int idEpic, SubTask task) throws IOException {  // добавить подзадачу
+    public void addSubTask(int idEpic, SubTask task) {  // добавить подзадачу
         id = calculateId();
         task.setIdEpic(idEpic);//  записали в поле сабтаска айди эпика
         task.setIdSubTask(id);
@@ -130,7 +134,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
 
 
     @Override
-    public SubTask findSubTaskById(int id) throws IOException {  // найти подзадачу по идентификатору
+    public SubTask findSubTaskById(int id) {  // найти подзадачу по идентификатору
         SubTask sub = subTasks.get(id);
         if (sub != null) {
             historyManager.addHistory(sub);
@@ -139,7 +143,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeSubTask() throws IOException {  //удаление всех подзадач
+    public void removeSubTask() {  //удаление всех подзадач
         for (int j : epics.keySet()) {   // для каждого эпика
             List<Integer> founds = getIdSubTask(j); // найти массив идентификаторов подзадач
             for (int id : founds) {
@@ -157,7 +161,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void changeSubTask(int id, SubTask task, int idEpic) throws IOException {  // поменять подзадачу по id
+    public void changeSubTask(int id, SubTask task, int idEpic) {  // поменять подзадачу по id
         subTasks.replace(id, task);
         task.setIdSubTask(id);
         task.setIdEpic(idEpic);
@@ -165,7 +169,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
     }
 
 
-    public int getIdOllTasks(Task task) throws IOException {
+    public int getIdOllTasks(Task task) {
         int id = 0;
         if (task instanceof Epic) {
             id = getIdEpic((Epic) task);
@@ -178,13 +182,13 @@ public abstract class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Integer> getIdSubTask(int id) throws IOException { //  найти массив идентификаторов подзадач
+    public List<Integer> getIdSubTask(int id) { //  найти массив идентификаторов подзадач
         Epic epic = findEpicById(id);
         return epic.getIdSubTasks();
     }
 
 
-    public void findSubTasksOfIdEpic(int idEpic) throws IOException {  // найти подзадачи по id эпика
+    public void findSubTasksOfIdEpic(int idEpic) {  // найти подзадачи по id эпика
         ArrayList<SubTask> foundSubTasks = new ArrayList<>();
         List<Integer> ids = getIdSubTask(idEpic);  //  лист идентификаторов подзадач
         for (int id : ids) {
@@ -194,12 +198,12 @@ public abstract class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Task> getHistory() throws IOException {
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 
     @Override
-    public int getIdSubTask(SubTask task) throws IOException {
+    public int getIdSubTask(SubTask task) {
         return task.getIdSubTask();
     }
 
@@ -214,7 +218,7 @@ public abstract class InMemoryTaskManager implements TaskManager {
         return id;
     }
 
-    private void findOllStatusSubTask(int idEpic) throws IOException {    // смена статус
+    private void findOllStatusSubTask(int idEpic) {    // смена статус
         Epic epic = epics.get(idEpic);
         ArrayList<MyEnum> statuses = new ArrayList<>();
         List<Integer> ids = getIdSubTask(idEpic);
