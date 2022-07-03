@@ -62,11 +62,9 @@ public class Task {
 
     @Override
     public String toString() {
-        return " type=" + getType() +
-                ", name='" + getName() +
-                ", description='" + getDescription() +
-                ", status=" + getStatus() +
-                '}' + "\n";
+        return  getType() + "," + getName() + "," +
+                 getDescription() + "," +
+                 getStatus();
     }
 }
 

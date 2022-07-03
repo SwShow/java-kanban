@@ -14,27 +14,27 @@ public interface TaskManager {
 
 
 
-    void createTask(Task task);  // создать задачу
+    void createTask(Task task) throws ManagerSaveException;  // создать задачу
 
     Task findTaskById(int id);  // найти задачу
 
     void removeTasks(); // удалить все задачи
 
-    void updateTask(int id, Task task);  // заменить задачу
+    void updateTask(int id, Task task) throws ManagerSaveException;  // заменить задачу
 
-    void removeTask(int id);  // удалить задачу
+    void removeTask(int id) throws ManagerSaveException;  // удалить задачу
 
-    void createEpic(Epic name);  // создать эпик
+    void createEpic(Epic name) throws ManagerSaveException;  // создать эпик
 
     Epic findEpicById(int id);  // найти задачу
 
-    void updateEpic(int id, Epic task); // обновить эпик по идентификатору
+    void updateEpic(int id, Epic task) throws ManagerSaveException; // обновить эпик по идентификатору
 
-    void removeEpics();  // удаление всех эпиков
+    void removeEpics() throws ManagerSaveException;  // удаление всех эпиков
 
-    void removeEpic(int idEpic);  // удалить эпик по идентификатору
+    void removeEpic(int idEpic) throws ManagerSaveException;  // удалить эпик по идентификатору
 
-    void addSubTask(int idEpic, SubTask task);  // добавить подзадачу
+    void addSubTask(int idEpic, SubTask task) throws ManagerSaveException;  // добавить подзадачу
 
     //SubTask findValOfId(int id);  // найти подзадачу по идентификатору
 
