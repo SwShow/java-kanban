@@ -12,7 +12,8 @@ import java.util.Map;
 public class InMemoryHistoryManager implements HistoryManager {
 
     private final Map<Integer, Node> customLinkedList = new HashMap<>();
-    private List<Task> listTask = new ArrayList<>();
+    public List<Task> listTask = new ArrayList<>();
+    public List<Integer> ids = new ArrayList<>();
 
     public Node head;
     public transient Node tail = null;
@@ -71,25 +72,18 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public List<Task> getHistory() {
-        getList();
-        return listTask;
-
-    }
-
-    public List<Task> getList() {
+        List<Task> listTask = new ArrayList<>();
         if (head != null) {
-            Node node = head.next;
+            Node node = head;
             while (node != null) {
-                listTask.add(node.data);
+                Task task = node.data;
+                listTask.add(task);
                 node = node.next;
             }
         }
-        return getListTask();
-    }
-
-    private List<Task> getListTask() {
         return listTask;
     }
+
 
     public int getIdOllTasks(Task task) {
         int id = 0;
@@ -114,6 +108,14 @@ public class InMemoryHistoryManager implements HistoryManager {
             this.next = next;
 
         }
+    }
+
+    @Override
+    public String toString() {
+        return "InMemoryHistoryManager{" +
+                "ids=" + ids +
+                "listTask=" + listTask +
+                '}';
     }
 }
 

@@ -8,12 +8,12 @@ import challenges.Task;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
-    public final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
-    private int id = 0;
-    private final Map<Integer, Task> tasks = new HashMap<>();
-    private final Map<Integer, Epic> epics = new HashMap<>();
-    private final Map<Integer, SubTask> subTasks = new HashMap<>(); //  мапа сабтасков
+    protected int id = 0;
+    protected final Map<Integer, Task> tasks = new HashMap<>();
+    protected final Map<Integer, Epic> epics = new HashMap<>();
+    protected final Map<Integer, SubTask> subTasks = new HashMap<>(); //  мапа сабтасков
 
 
     public List<Task> getTasks() {

@@ -9,7 +9,10 @@ public class Task {
     private final String description;
     private MyEnum status;
 
-    public Task(TypeTask type, String name, String description, MyEnum status) {
+    public Task(String name, String description, MyEnum status) {
+        this(TypeTask.TASK, name, description, status);
+    }
+    protected Task(TypeTask type, String name, String description, MyEnum status) {
         this.type = type;
         this.name = name;
         this.description = description;
@@ -62,7 +65,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return  getType() + "," + getName() + "," +
+        return  getId() + "," + getType() + "," + getName() + "," +
                  getDescription() + "," +
                  getStatus();
     }

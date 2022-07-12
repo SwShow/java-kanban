@@ -6,9 +6,8 @@ public class SubTask extends Task {
     private int idEpic;
     private int idSubTask;
 
-    public SubTask(TypeTask type, String name, String description, MyEnum status) {
-        super(type, name, description, status);
-
+    public SubTask(String name, String description, MyEnum status) {
+        super(TypeTask.SUBTASK, name, description, status);
     }
 
     public int getIdEpic() {
@@ -64,14 +63,11 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "SubTask{" +
-                " idSubTasks=" + getIdSubTask() +
-                ", type=" + getType() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", status=" + getStatus() +
-                ", idEpic=" + getIdEpic() +
-                '}' + "\n";
+        return  getIdSubTask() + "," + getType() +"," +
+                getName() + "," +
+                 getDescription() + "," +
+                getStatus() +","
+                + getIdEpic();
     }
 }
 

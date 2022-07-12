@@ -11,8 +11,8 @@ public class Epic extends Task {
     private final ArrayList<Integer> idSubTasks;
     private int idEpic;
 
-    public Epic(TypeTask type, String name, String description, MyEnum status) {
-        super(type, name, description, status);
+    public Epic(String name, String description, MyEnum status) {
+        super(TypeTask.EPIC, name, description, status);
 
         idSubTasks = new ArrayList<>();
 
@@ -66,13 +66,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{" +
-                ", idEpic=" + getIdEpic() +
-                ", type=" + getType() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", status=" + getStatus() +
-                ", idSubTasks=" + getIdSubTasks() +
-                '}' +"\n";
+        return getIdEpic() + "," +  getType() + "," + getName() +
+                "," + getDescription() +"," + getStatus() +"," + getIdSubTasks();
     }
 }
