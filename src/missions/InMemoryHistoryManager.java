@@ -1,7 +1,4 @@
 package missions;
-
-import challenges.Epic;
-import challenges.SubTask;
 import challenges.Task;
 
 import java.util.ArrayList;
@@ -12,16 +9,13 @@ import java.util.Map;
 public class InMemoryHistoryManager implements HistoryManager {
 
     private final Map<Integer, Node> customLinkedList = new HashMap<>();
-    public List<Task> listTask = new ArrayList<>();
-    public List<Integer> ids = new ArrayList<>();
-
-    public Node head;
-    public transient Node tail = null;
-    public int size = 0;
+    private Node head;
+    private transient Node tail = null;
+    private int size = 0;
 
 
-    public void linkLast(Task task) {
-        int id = getIdOllTasks(task);
+    private void linkLast(Task task) {
+        int id = task.getId();
         if (customLinkedList.containsKey(id)) {
             removeNode(task);
         }
@@ -37,8 +31,8 @@ public class InMemoryHistoryManager implements HistoryManager {
         size++;
     }
 
-    public void removeNode(Task task) {
-        int id = getIdOllTasks(task);
+    private void removeNode(Task task) {
+        int id = task.getId();
         Node node = customLinkedList.get(id);
         final Node next = node.next;
         final Node prev = node.prev;
@@ -84,20 +78,11 @@ public class InMemoryHistoryManager implements HistoryManager {
         return listTask;
     }
 
-
-    public int getIdOllTasks(Task task) {
-        int id = 0;
-        if (task instanceof Epic) {
-            id = ((Epic) task).getIdEpic();
-        } else if (task instanceof SubTask) {
-            id = ((SubTask) task).getIdSubTask();
-        } else {
-            id = task.getId();
-        }
-        return id;
+    public int getSize() {
+        return size;
     }
 
-    public static class Node {
+    private static class Node {
         Node prev;
         Node next;
         Task data;
@@ -113,8 +98,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public String toString() {
         return "InMemoryHistoryManager{" +
-                "ids=" + ids +
-                "listTask=" + listTask +
+                "listTask=" + getHistory() +
                 '}';
     }
 }

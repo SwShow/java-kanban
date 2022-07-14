@@ -1,25 +1,22 @@
 package challenges;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SubTask extends Task {
     private int idEpic;
-    private int idSubTask;
 
-    public SubTask(String name, String description, MyEnum status) {
-        super(TypeTask.SUBTASK, name, description, status);
+    public SubTask(String name, String description, TaskStatus status,
+                   LocalDateTime startTime, long duration) {
+        super(TypeTask.SUBTASK, name, description, status, startTime, duration);
+    }
+
+    public SubTask(String name, String description, TaskStatus status) {
+        super(TypeTask.SUBTASK, name, description, status, null, 0);
     }
 
     public int getIdEpic() {
         return idEpic;
-    }
-
-    public int getIdSubTask() {
-        return idSubTask;
-    }
-
-    public void setIdSubTask(int idSubTask) {
-        this.idSubTask = idSubTask;
     }
 
     @Override
@@ -43,7 +40,7 @@ public class SubTask extends Task {
     }
 
     @Override
-    public MyEnum getStatus() {
+    public TaskStatus getStatus() {
         return super.getStatus();
     }
 
@@ -63,11 +60,8 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return  getIdSubTask() + "," + getType() +"," +
-                getName() + "," +
-                 getDescription() + "," +
-                getStatus() +","
-                + getIdEpic();
+        return super.toString() +"," + getIdEpic();
     }
 }
+
 

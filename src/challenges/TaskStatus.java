@@ -1,6 +1,6 @@
 package challenges;
 
-public enum MyEnum {
+public enum TaskStatus {
     NEW,
     IN_PROGRESS,
     DONE
