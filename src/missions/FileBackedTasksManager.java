@@ -181,7 +181,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public void save()  {
         try {
             FileWriter writer = new FileWriter(fileName);
-            writer.write("id,type,name,status,description,epic" + "\n");
+            writer.write("id,type,name,status,description,startDate,duration,epic" + "\n");
             for (Task task : getTasks()) {
                 writer.write(toString(task) + "\n");
             }
@@ -311,9 +311,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 startTime, duration);
         fileBackedTasksManager.createEpic(shopping);
         fileBackedTasksManager.addSubTask(shopping.getId(), Shop1);
+        fileBackedTasksManager.findSubTaskById(Shop1.getId());
         fileBackedTasksManager.addSubTask(shopping.getId(), Shop2);
         fileBackedTasksManager.findEpicById(shopping.getId());
-        fileBackedTasksManager.findSubTaskById(Shop1.getId());
         fileBackedTasksManager.findSubTaskById(Shop2.getId());
 
         // восстанавливаем менеджер из файла
@@ -331,7 +331,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     private static void printManagerInfo(TaskManager taskManager) {
-        System.out.println("id,type,name,status,description,epic");
+        System.out.println("id,type,name,status,description,startDate,duration,epic");
         for (Task task : taskManager.getTasks())
             System.out.println(toString(task));
         for (Epic task : taskManager.getEpics())

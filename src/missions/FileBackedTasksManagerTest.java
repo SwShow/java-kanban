@@ -87,7 +87,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         assertEquals(prioritizedTasks, loadedPrioritizedTasks);
 
         List<Task> history = taskManager.getHistory();
-        List<Task> loadedHistory = taskManager.getHistory();
+        List<Task> loadedHistory = loadedManager.getHistory();
         assertEquals(history.size(), loadedHistory.size(), "Размер историй не совпадает");
         for (int i = 0; i < history.size(); i++) {
             assertEquals(history.get(i), loadedHistory.get(i), "История не совпадает");

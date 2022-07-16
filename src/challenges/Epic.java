@@ -87,6 +87,15 @@ public class Epic extends Task {
             ids.add(task.getId());
         return ids;
     }
+    // У эпика нельзя обновить время начала
+    @Override
+    public void setStartTime(LocalDateTime startTime) {
+    }
+
+    // у эпика нельзя обновить длительность
+    @Override
+    public void setDuration(long duration) {
+    }
 
     @Override
     public TypeTask getType() {
@@ -114,7 +123,7 @@ public class Epic extends Task {
         if (!(o instanceof Epic)) return false;
         if (!super.equals(o)) return false;
         Epic epic = (Epic) o;
-        return super.equals(o) && Objects.equals(subTaskMap, epic.subTaskMap);
+        return Objects.equals(subTaskMap, epic.subTaskMap);
     }
 
     @Override

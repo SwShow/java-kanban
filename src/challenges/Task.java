@@ -41,15 +41,19 @@ public class Task {
         this.status = status;
         this.startTime = startTime;
         this.duration = duration;
-
-        if (startTime == null) {
-            endTime = null;
-        }
-        else {
-            endTime = startTime.plusMinutes(duration);
-        }
-
+        updateEndTime();
     }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+        updateEndTime();
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+        updateEndTime();
+    }
+
 
     public TypeTask getType() {
         return type;
@@ -95,16 +99,18 @@ public class Task {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Task)) return false;
         Task task = (Task) o;
-        return Objects.equals(type, task.type)
-                && Objects.equals(name, task.name)
-                && Objects.equals(description, task.description) && Objects.equals(status, task.status);
+        return getId() == task.getId() && getDuration() == task.getDuration() && getType() == task.getType()
+                && Objects.equals(getName(), task.getName()) && Objects.equals(getDescription(), task.getDescription())
+                && getStatus() == task.getStatus() && Objects.equals(getStartTime(), task.getStartTime())
+                && Objects.equals(getEndTime(), task.getEndTime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, status);
+        return Objects.hash(getId(), getType(), getName(), getDescription(), getStatus(),
+                getStartTime(), getEndTime(), getDuration());
     }
 
     @Override
@@ -121,6 +127,12 @@ public class Task {
                 String.valueOf(id), type.toString(),
                 name, description, status.toString(),
                 startTimeString, String.valueOf(duration), endTimeString);
+    }
+    private void updateEndTime() {
+        if (startTime == null)
+            endTime = null;
+        else
+            endTime = startTime.plusMinutes(duration);
     }
 }
 
