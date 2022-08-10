@@ -2,8 +2,6 @@ package missions;
 
 import challenges.*;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -18,14 +16,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     private static final String nullDateString = "";
 
     public FileBackedTasksManager(File fileName) {
-        this.fileName = fileName.getAbsolutePath();
-        if (!Files.exists(Paths.get(fileName.toURI()))) {
+      this.fileName = fileName.getAbsolutePath();
+        /* if (!Files.exists(Paths.get(fileName.toURI()))) {
             try {
                 Files.createFile(Paths.get(fileName.toURI()));
             } catch (IOException exception) {
                 throw new ManagerSaveException("Ошибка при попытке создания файла");
             }
-        }
+        }*/
     }
 
     public static FileBackedTasksManager loadFromFile(File fileName) {
@@ -50,17 +48,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 String value = fromFile.get(i);
                 Task task = taskFromString(value); // распарсили строку в задание
                 switch (task.getType()) { // в зависимости от типа задания добавили в нужную таблицу
-                    case TASK:
-                        tasks.put(task.getId(), task);
-                        break;
-                    case EPIC:
+                    case TASK -> tasks.put(task.getId(), task);
+                    case EPIC -> {
                         Epic epic = (Epic) task;
                         epics.put(epic.getId(), epic);
-                        break;
-                    case SUBTASK:
+                    }
+                    case SUBTASK -> {
                         SubTask subTask = (SubTask) task;
                         subTasks.put(subTask.getId(), subTask);
-                        break;
+                    }
                 }
 
                 fileBackedTasksManager.id++; // обновили максимальное значение id
@@ -178,7 +174,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return line;
     }
 
-    public void save()  {
+    public void save(){
         try {
             FileWriter writer = new FileWriter(fileName);
             writer.write("id,type,name,status,description,startDate,duration,epic" + "\n");
@@ -192,14 +188,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 writer.write(toString(task) + "\n");
             }
             writer.write("\n");
-            String history =  toString(historyManager);
+            String history = toString(historyManager);
             writer.write(history);
             writer.write("\n");
 
             writer.close();
         } catch (IOException exception) {
             throw new ManagerSaveException("Ошибка записи файла.");
-
         }
     }
 
@@ -281,6 +276,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 startTime, duration);
         // сохраняем задачу 1
         fileBackedTasksManager.createTask(data);
+         startTime = LocalDateTime.of(2022, 9, 14, 0, 0);
+
         // создаем задачу 2
         Task dinner = new Task("сходить в кафе", "изучить меню", NEW,
                 startTime, duration);
@@ -302,7 +299,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         System.out.println("Загруженный");
         printManagerInfo(restored);
         System.out.println();
-
+        startTime = LocalDateTime.of(2022, 10, 14, 0, 0);
         // добавляем эпик и сабтаски
         Epic shopping = new Epic("сходить в магазин", "Ашан", NEW);
         SubTask Shop1 = new SubTask("купить мыло", "душистое", NEW,
