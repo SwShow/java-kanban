@@ -1,29 +1,61 @@
-package missions;
+package servermanager;
 
 import challenges.Epic;
 import challenges.SubTask;
 import challenges.Task;
+import mission.TaskManagerTest;
+import missions.ManagerSaveException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 import static challenges.TaskStatus.DONE;
 import static challenges.TaskStatus.NEW;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.testng.Assert.assertTrue;
 
-public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager> {
 
-    protected File storageFile = new File("resources/history.csv");
+public class HTTPTaskManagerTest extends TaskManagerTest<HTTPTaskManager> {
 
-    protected FileBackedTasksManager getInstance() {
-        return new FileBackedTasksManager(storageFile);
+    private KVServer kvServer;
+
+    private final URI serverURL = URI.create("http://localhost:8078");
+
+    @Override
+    protected HTTPTaskManager getInstance() {
+        return new HTTPTaskManager(serverURL);
+    }
+
+    @BeforeEach
+    @Override
+    public void init() {
+        try {
+            kvServer = new KVServer();
+        }
+        catch (IOException exception) {
+            exception.printStackTrace();
+            throw new ManagerSaveException(exception.getMessage());
+        }
+        kvServer.start();
+
+        super.init();
+    }
+
+    @AfterEach
+    public void stopServer() {
+        kvServer.stop();
     }
 
     @Test
     void emptyRestore() {
         taskManager.save();
-        FileBackedTasksManager loadedManager = FileBackedTasksManager.loadFromFile(storageFile);
+
+        HTTPTaskManager loadedManager = new HTTPTaskManager(serverURL);
+        loadedManager.load();
 
         assertTrue(loadedManager.getTasks().isEmpty(), "Список задач должен быть пуст");
         assertTrue(loadedManager.getEpics().isEmpty(), "Список эпиков должен быть пуст");
@@ -35,7 +67,10 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
     @Test
     void epicWithoutSubtasksRestore() {
         taskManager.createEpic(epic);
-        FileBackedTasksManager loadedManager = FileBackedTasksManager.loadFromFile(storageFile);
+
+        HTTPTaskManager loadedManager = new HTTPTaskManager(serverURL);
+        loadedManager.load();
+
         Epic loadedEpic = loadedManager.findEpicById(epic.getId());
 
         assertEquals(epic, loadedEpic, "Загруженный эпик не равен начальному");
@@ -52,22 +87,21 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         Task dinner = new Task("сходить в кафе", "изучить меню", NEW,
                 startTime, duration);
         taskManager.createTask(dinner);
-        Task task2 = taskManager.findTaskById(dinner.getId());
-        Task task1 = taskManager.findTaskById(data.getId());
+        taskManager.findTaskById(dinner.getId());
+        taskManager.findTaskById(data.getId());
         Epic shopping = new Epic("сходить в магазин", "Ашан", NEW);
-        SubTask Shop1 = new SubTask("купить мыло", "душистое", NEW,
-                startTime, duration);
-        SubTask Shop2 = new SubTask( "купить шампунь", "для нормальных волос", DONE,
-                startTime, duration);
+        SubTask Shop1 = new SubTask("купить мыло", "душистое", NEW);
+        SubTask Shop2 = new SubTask( "купить шампунь", "для нормальных волос", DONE);
         taskManager.createEpic(shopping);
         taskManager.addSubTask(shopping.getId(), Shop1);
         taskManager.addSubTask(shopping.getId(), Shop2);
-        Epic epic1 = taskManager.findEpicById(shopping.getId());
-        SubTask subtask1 = taskManager.findSubTaskById(Shop1.getId());
-        SubTask subtask2 = taskManager.findSubTaskById(Shop2.getId());
+        taskManager.findEpicById(shopping.getId());
+        taskManager.findSubTaskById(Shop1.getId());
+        taskManager.findSubTaskById(Shop2.getId());
 
         // восстанавливаем
-        FileBackedTasksManager loadedManager = FileBackedTasksManager.loadFromFile(storageFile);
+        HTTPTaskManager loadedManager = new HTTPTaskManager(serverURL);
+        loadedManager.load();
 
         // проверяем, что данные сохранились
         List<Task> tasks = taskManager.getTasks();
@@ -99,4 +133,5 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
                 list1.containsAll(list2) &&
                 list2.containsAll(list1);
     }
+
 }

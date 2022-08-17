@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import handler.HistoryManagerAdapter;
 import handler.LocalDateTimeAdapter;
+import handler.TaskAdapter;
 import missions.FileBackedTasksManager;
 import missions.HistoryManager;
 import missions.ManagerSaveException;
@@ -15,12 +16,11 @@ import java.time.LocalDateTime;
 import java.util.TreeSet;
 
 public class HTTPTaskManager extends FileBackedTasksManager {
-    private transient KVTaskClient client;
+    private final transient KVTaskClient client;
 
     private static final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .registerTypeHierarchyAdapter(HistoryManager.class, new HistoryManagerAdapter())
-            .serializeNulls()
+            .registerTypeHierarchyAdapter(Task.class, new TaskAdapter())
             .create();
     private static final String KEY = "manager";
 
@@ -38,34 +38,37 @@ public class HTTPTaskManager extends FileBackedTasksManager {
     @Override
     public void save()  {
         try {
-            client.put(KEY, gson.toJson(this));
+            String serializedManager = gson.toJson(this);
+            client.put(KEY, serializedManager);
         } catch (Exception exception) {
             throw new ManagerSaveException(exception.getMessage());
         }
     }
 
-    public static HTTPTaskManager loadFromServer(URI serverURL) {
+    @Override
+    public void load() {
         try {
-            HTTPTaskManager httpTaskManager = new HTTPTaskManager(serverURL);
-
-            // получаем поля, не восстанавливающиеся при десериализации
-            KVTaskClient client = httpTaskManager.client;
-            TreeSet<Task> prioritySet = httpTaskManager.prioritySet;
-
-            // загружаем менеджер
             String serializedManager = client.load(KEY);
-            httpTaskManager = gson.fromJson(serializedManager, HTTPTaskManager.class);
+            HTTPTaskManager loadedManager = gson.fromJson(serializedManager, HTTPTaskManager.class);
 
-            // восстанавливаем остальные поля
-            httpTaskManager.client = client;
-            prioritySet.addAll(httpTaskManager.tasks.values());
-            prioritySet.addAll(httpTaskManager.subTasks.values());
-            httpTaskManager.prioritySet = prioritySet;
+            tasks.clear();
+            tasks.putAll(loadedManager.tasks);
 
-            return httpTaskManager;
+            subTasks.clear();
+            subTasks.putAll(loadedManager.subTasks);
+
+            epics.clear();
+            epics.putAll(loadedManager.epics);
+
+            prioritySet.clear();
+            prioritySet.addAll(loadedManager.prioritySet);
+
+            for (Task task: loadedManager.getHistory())
+                historyManager.addHistory(task);
+        }
+        catch (WrongResponseException ignored) {
         }
         catch (Exception exception) {
-            exception.printStackTrace();
             throw new ManagerSaveException(exception.getMessage());
         }
     }

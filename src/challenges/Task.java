@@ -2,7 +2,7 @@ package challenges;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Task {
+public class Task implements Comparable<Task>  {
     private int id;
     private final TypeTask type;
     private final String name;
@@ -101,16 +101,14 @@ public class Task {
         if (this == o) return true;
         if (!(o instanceof Task)) return false;
         Task task = (Task) o;
-        return getId() == task.getId() && getDuration() == task.getDuration() && getType() == task.getType()
-                && Objects.equals(getName(), task.getName()) && Objects.equals(getDescription(), task.getDescription())
-                && getStatus() == task.getStatus() && Objects.equals(getStartTime(), task.getStartTime())
-                && Objects.equals(getEndTime(), task.getEndTime());
+        return Objects.equals(id, task.id) && Objects.equals(name, task.name)
+                && Objects.equals(description, task.description) && Objects.equals(status, task.status)
+                && Objects.equals(startTime, task.startTime) && Objects.equals(duration, task.duration);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getType(), getName(), getDescription(), getStatus(),
-                getStartTime(), getEndTime(), getDuration());
+        return Objects.hash(id, name, description, status, startTime, duration);
     }
 
     @Override
@@ -133,6 +131,21 @@ public class Task {
             endTime = null;
         else
             endTime = startTime.plusMinutes(duration);
+    }
+    @Override
+    public int compareTo(Task another) {
+        LocalDateTime anotherStartTime = another.getStartTime();
+
+        if (startTime == null && anotherStartTime == null)
+            return 0;
+
+        if (startTime == null)
+            return 1;
+
+        if (anotherStartTime == null)
+            return -1;
+
+        return startTime.compareTo(anotherStartTime);
     }
 }
 

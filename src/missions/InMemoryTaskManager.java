@@ -15,7 +15,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Epic> epics = new HashMap<>();
     protected final Map<Integer, SubTask> subTasks = new HashMap<>(); //  мапа сабтасков
 
-    protected final TreeSet<Task> prioritySet = new TreeSet<>( this::compareTasksByStartTime );
+    protected final TreeSet<Task> prioritySet = new TreeSet<>();
 
 
     public List<Task> getTasks() {
@@ -298,35 +298,26 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    private int compareTasksByStartTime(Task task1, Task task2) {
-        LocalDateTime task1Time = task1.getStartTime();
-        LocalDateTime task2Time = task2.getStartTime();
 
-        if (task1Time == null && task2Time == null)
-            return 0;
+    private boolean isTasksIntersects(Task task1, Task task2) {
+        LocalDateTime task1StartTime = task1.getStartTime();
+        LocalDateTime task1EndTime = task1.getEndTime();
+        LocalDateTime task2StartTime = task2.getStartTime();
+        LocalDateTime task2EndTime = task2.getEndTime();
 
-        if (task1Time == null)
-            return 1;
-
-        if (task2Time == null)
-            return -1;
-
-        return task1Time.compareTo(task2Time);
+        return task1StartTime != null && task2StartTime != null &&
+                task1StartTime.isBefore(task2EndTime) && task2StartTime.isBefore(task1EndTime);
     }
 
     private boolean isTaskIntersects(Task task) {
-        LocalDateTime taskStartTime = task.getStartTime();
-        LocalDateTime taskEndTime = task.getEndTime();
-
-        if (taskStartTime == null)
-            return false;
-
-        for (Task taskInManager: tasks.values()) {
-            if (taskInManager.getEndTime() != null &&
-                    taskStartTime.isBefore(taskInManager.getEndTime()) &&
-                    taskInManager.getStartTime().isBefore(taskEndTime)) {
+        for (Task taskInManager : tasks.values()) {
+            if (isTasksIntersects(task, taskInManager))
                 return true;
-            }
+        }
+
+        for (SubTask taskInManager : subTasks.values()) {
+            if (isTasksIntersects(task, taskInManager))
+                return true;
         }
 
         return false;

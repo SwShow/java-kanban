@@ -1,4 +1,4 @@
-package missions;
+package mission;
 
 import challenges.Epic;
 import challenges.SubTask;

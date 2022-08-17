@@ -6,7 +6,9 @@ import java.net.URI;
 public class Managers {
 
     public static TaskManager getDefault() throws ManagerSaveException {
-        return new HTTPTaskManager(URI.create("http://localhost:8078"));
+        HTTPTaskManager taskManager = new HTTPTaskManager(URI.create("http://localhost:8078"));
+        taskManager.load();
+        return taskManager;
     }
 
     public static HistoryManager getDefaultHistory() {

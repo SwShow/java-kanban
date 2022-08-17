@@ -27,7 +27,7 @@ public class SubTaskEpicHandler extends Handler{
 
     private void getEpicSubTasks(Map<String, String> queryMap, HttpExchange httpExchange) throws IOException {
         // получить id, если задан некорректно - отправить ошибку и закончить запрос
-        int epicId = 0;
+        int epicId;
 
         try {
             epicId = getIntQuery(ID_QUERY, queryMap);

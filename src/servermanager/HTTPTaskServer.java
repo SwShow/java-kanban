@@ -7,6 +7,7 @@ import missions.TaskManager;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Map;
 
 
 public class HTTPTaskServer {
@@ -14,41 +15,52 @@ public class HTTPTaskServer {
     private final HttpServer server;
 
     public HTTPTaskServer() throws IOException {
-        // создаем сервер
-        int port = 8080;
-        String addressName = "localhost";
-        InetSocketAddress address = new InetSocketAddress(addressName, port);
-        int defaultBacklog = 0;
-        server = HttpServer.create(address, defaultBacklog);
+        server = createServer();
 
         TaskManager taskManager = Managers.getDefault();
 
-        String TASK_ENDPOINT = "/tasks/task/";
-        server.createContext(TASK_ENDPOINT, new TaskHandler(taskManager));
-
-        String SUBTASK_ENDPOINT = "/tasks/subtask/";
-        server.createContext(SUBTASK_ENDPOINT, new SubTaskHandler(taskManager));
-
-        String EPIC_ENDPOINT = "/tasks/epic/";
-        server.createContext(EPIC_ENDPOINT, new EpicHandler(taskManager));
-
-        String ALL_TASKS_ENDPOINT = "/tasks/";
-        server.createContext(ALL_TASKS_ENDPOINT, new AllTasksHandler(taskManager));
-
-        String HISTORY_ENDPOINT = "/tasks/history/";
-        server.createContext(HISTORY_ENDPOINT, new HistoryHandler(taskManager));
-
-        String SUBTASK_EPIC_ENDPOINT = "/tasks/subtask/epic";
-        server.createContext(SUBTASK_EPIC_ENDPOINT, new SubTaskEpicHandler(taskManager));
+        connectHandlersWithEndpoints(taskManager);
     }
 
     public void start() {
         server.start();
-        System.out.println("HTTPServer запущен");
     }
+
     public void stop() {
         int delay = 0;
         server.stop(delay);
+    }
+
+    private void connectHandlersWithEndpoints(TaskManager taskManager) {
+        Map<String, Handler> endpoints = Map.of(
+                "/tasks/task", new TaskHandler(taskManager),
+                "/tasks/subtask", new SubTaskHandler(taskManager),
+                "/tasks/epic", new EpicHandler(taskManager),
+                "/tasks", new AllTasksHandler(taskManager),
+                "/tasks/history", new HistoryHandler(taskManager),
+                "/tasks/subtask/epic", new SubTaskEpicHandler(taskManager)
+        );
+
+        endpoints.forEach(server::createContext);
+    }
+
+    private HttpServer createServer() throws IOException {
+        int port = 8080;
+        String addressName = "localhost";
+        InetSocketAddress address = new InetSocketAddress(addressName, port);
+        int defaultBacklog = 0;
+        return HttpServer.create(address, defaultBacklog);
+    }
+
+    public static void main(String[] args) throws IOException {
+        KVServer kvServer = new KVServer();
+        kvServer.start();
+
+        HTTPTaskServer taskServer = new HTTPTaskServer();
+        taskServer.start();
+
+        taskServer.stop();
+        kvServer.stop();
     }
 
 }

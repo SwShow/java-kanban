@@ -1,4 +1,6 @@
-package missions;
+package mission;
+
+import missions.InMemoryTaskManager;
 
 public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 

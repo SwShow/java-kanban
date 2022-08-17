@@ -1,9 +1,10 @@
-package missions;
+package mission;
 
 import challenges.Epic;
 import challenges.SubTask;
 import challenges.Task;
 import challenges.TaskStatus;
+import missions.HistoryManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

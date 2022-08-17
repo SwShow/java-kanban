@@ -1,16 +1,17 @@
-package missions;
+package mission;
 
 import challenges.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import missions.TaskManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
-abstract class TaskManagerTest<T extends TaskManager> {
+public abstract class TaskManagerTest<T extends TaskManager> {
 
     protected T taskManager;
 
@@ -27,7 +28,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     protected abstract T getInstance();
 
     @BeforeEach
-    void init() {
+    protected void init() {
         taskManager = getInstance();
         startTime = LocalDateTime.of(2022, Calendar.AUGUST, 14, 0, 0, 0);
         duration = 2000;
@@ -376,6 +377,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.createEpic(epic);
         int epicId = epic.getId();
         taskManager.addSubTask(epicId, subTask1);
+        taskManager.addSubTask(epicId, subTask2);
         int subTaskId = subTask1.getId();
         SubTask addedSubtask = taskManager.findSubTaskById(subTaskId);
 
@@ -557,7 +559,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
         assertEquals(size, addedSubtasks.size(), "Количество подзадач не совпадает");
         for (SubTask subTask: subTasksToAdd) {
-            assertTrue(addedSubtasks.contains(subTask), "В списке должена содержаться подзадача");
+            assertTrue(addedSubtasks.contains(subTask), "В списке должна содержаться подзадача");
         }
     }
 

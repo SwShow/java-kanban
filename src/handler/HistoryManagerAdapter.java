@@ -1,15 +1,13 @@
 package handler;
 
-import challenges.Epic;
-import challenges.SubTask;
-import challenges.Task;
-import challenges.TypeTask;
+import challenges.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import missions.HistoryManager;
+import missions.InMemoryHistoryManager;
 import missions.Managers;
 
 import java.io.IOException;
@@ -19,8 +17,7 @@ import java.util.List;
 public class HistoryManagerAdapter extends TypeAdapter<HistoryManager> {
 
     private final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-            .serializeNulls()
+            .registerTypeHierarchyAdapter(Task.class, new TaskAdapter())
             .create();
 
     @Override
@@ -34,10 +31,8 @@ public class HistoryManagerAdapter extends TypeAdapter<HistoryManager> {
 
         jsonWriter.beginArray();
         for (Task task: history) {
-            jsonWriter.beginObject();
-            String name = task.getType().name();
-            jsonWriter.name(name).value(gson.toJson(task));
-            jsonWriter.endObject();
+            String serializedTask = gson.toJson(task);
+            jsonWriter.jsonValue(serializedTask);
         }
         jsonWriter.endArray();
     }
@@ -48,20 +43,36 @@ public class HistoryManagerAdapter extends TypeAdapter<HistoryManager> {
 
         jsonReader.beginArray();
         while (jsonReader.hasNext()) {
-            jsonReader.beginObject();
-            TypeTask type = TypeTask.valueOf(jsonReader.nextName());
-            String serializedTask = jsonReader.nextString();
-            Task task = switch(type) {
-                case TASK -> gson.fromJson(serializedTask, Task.class);
-                case EPIC -> gson.fromJson(serializedTask, Epic.class);
-                case SUBTASK -> gson.fromJson(serializedTask, SubTask.class);
-            };
+            Task task = gson.fromJson(jsonReader, Task.class);
             historyManager.addHistory(task);
-            jsonReader.endObject();
         }
         jsonReader.endArray();
 
         return historyManager;
 
+    }
+    public static void main(String[] args) {
+        Gson gson = new GsonBuilder()
+                .registerTypeHierarchyAdapter(HistoryManager.class, new HistoryManagerAdapter())
+                .create();
+
+        HistoryManager historyManager = new InMemoryHistoryManager();
+
+        LocalDateTime startTime = LocalDateTime.of(1900, 11, 20, 1, 2);
+        int duration = 100;
+        Task task1 = new Task("1", "2", TaskStatus.NEW, startTime, duration);
+        task1.setId(1);
+        Task task2 = new Task("3", "4", TaskStatus.NEW, startTime, duration);
+        task2.setId(2);
+        historyManager.addHistory(task1);
+        historyManager.addHistory(task2);
+
+        String serializedManager = gson.toJson(historyManager);
+        System.out.println(serializedManager);
+
+        HistoryManager deserializedManager = gson.fromJson(serializedManager, HistoryManager.class);
+        Task deserializedTask1 = deserializedManager.getHistory().get(0);
+
+        System.out.println(deserializedTask1.equals(task1));
     }
 }

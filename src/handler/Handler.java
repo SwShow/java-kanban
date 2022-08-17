@@ -1,5 +1,6 @@
 package handler;
 
+import challenges.Task;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
@@ -19,8 +20,7 @@ public abstract class Handler implements HttpHandler {
     protected static final String ID_QUERY = "id";
 
     protected final static Gson gson = new GsonBuilder()
-            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-            .serializeNulls()
+            .registerTypeHierarchyAdapter(Task.class, new TaskAdapter())
             .create();
 
     protected final TaskManager taskManager;
@@ -51,7 +51,7 @@ public abstract class Handler implements HttpHandler {
         sendResponse(StatusCode.BAD_REQUEST.getCode(), httpExchange);
     }
 
-    protected void handlePost(HttpExchange httpExchange)  throws IOException {
+    protected void handlePost(HttpExchange httpExchange) throws IOException {
         sendResponse(StatusCode.BAD_REQUEST.getCode(), httpExchange);
     }
 

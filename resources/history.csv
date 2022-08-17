@@ -1,5 +1,5 @@
 id,type,name,status,description,startDate,duration,epic
-1,TASK,посмотреть фильм,NEW,интересный,2022-07-14 00:00:00,2000
-2,EPIC,сходить в магазин,NEW,Ашан,,0
+1,EPIC,epic,IN_PROGRESS,description epic,2022-07-14 00:00:00,2000
+2,SUBTASK,subtask0,IN_PROGRESS,description0,2022-07-14 00:00:00,2000,1
 
-1,2
+
