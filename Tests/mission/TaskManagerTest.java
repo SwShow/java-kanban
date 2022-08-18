@@ -550,10 +550,12 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         int size = 100;
         List<SubTask> subTasksToAdd = new ArrayList<>();
         for (int i = 0; i < size; i++) {
+
             SubTask subTask = new SubTask("subtask" + i, "description" + i, TaskStatus.IN_PROGRESS,
                     startTime, duration);
             subTasksToAdd.add(subTask);
             taskManager.addSubTask(epic.getId(), subTask);
+            startTime = startTime.plusMinutes(duration);
         }
         List<SubTask> addedSubtasks = taskManager.getSubTasks();
 
