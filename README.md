@@ -1,5 +1,4 @@
 # java-kanban
-Repository for homework project.
 
     Менеджер задач
     
